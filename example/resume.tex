@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{geometry}
+
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+    top=20mm,
+}
+
+\newcommand{\entry}[2]{
+    \textbf{#1} \hfill \textit{#2}
+}
+
+\begin{document}
+
+\begin{flushleft}
+    \textbf{\LARGE John Doe} \\
+    Programmer \\
+    \href{https://johndoe.com}{johndoe.com} | john@gmail.com | (912) 555-4321 \\
+    2712 Broadway St, San Francisco, California, CA 94115, US
+\end{flushleft}
+
+\section*{Summary}
+A summary of John Doe...
+
+\section*{Work Experience}
+\begin{itemize}[leftmargin=*]
+    \item \entry{President}{Company} \hfill Jan 2013 - Jan 2014 \\
+    Description... \\
+    Highlights: Started the company
+\end{itemize}
+
+\section*{Volunteer Experience}
+\begin{itemize}[leftmargin=*]
+    \item \entry{Volunteer}{Organization} \hfill Jan 2012 - Jan 2013 \\
+    Description... \\
+    Highlights: Awarded 'Volunteer of the Month'
+\end{itemize}
+
+\section*{Education}
+\begin{itemize}[leftmargin=*]
+    \item \entry{Bachelor in Software Development}{University} \hfill Jan 2011 - Jan 2013 \\
+    Score: 4.0 \\
+    Courses: DB1101 - Basic SQL
+\end{itemize}
+
+\section*{Awards}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Award} \hfill Nov 2014 \\
+    Company \\
+    There is no spoon.
+\end{itemize}
+
+\section*{Certificates}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Certificate} \hfill Nov 7, 2021 \\
+    Issuer: Company \\
+    \href{https://certificate.com}{certificate.com}
+\end{itemize}
+
+\section*{Publications}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Publication} \hfill Oct 2014 \\
+    Publisher: Company \\
+    \href{https://publication.com}{publication.com} \\
+    Description...
+\end{itemize}
+
+\section*{Skills}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Web Development} - Master \\
+    Keywords: HTML, CSS, JavaScript
+\end{itemize}
+
+\section*{Languages}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{English} - Native speaker
+\end{itemize}
+
+\section*{Interests}
+\begin{itemize}[leftmargin=*]
+    \item Wildlife: Ferrets, Unicorns
+\end{itemize}
+
+\section*{References}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Jane Doe} \\
+    Reference...
+\end{itemize}
+
+\section*{Projects}
+\begin{itemize}[leftmargin=*]
+    \item \entry{Project}{Jan 2019 - Jan 2021} \\
+    Description... \\
+    Highlights: Won award at AIHacks 2016 \\
+    \href{https://project.com/}{project.com}
+\end{itemize}
+
+\end{document}
+
