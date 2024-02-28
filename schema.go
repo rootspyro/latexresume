@@ -15,7 +15,7 @@ type JsonResume struct {
 	Languages    []Language    `json:"languages"`
 	Interests    []Interest    `json:"interests"`
 	References   []Reference   `json:"references"`
-	Projects     []Project     `json:"Project"`
+	Projects     []Project     `json:"projects"`
 }
 
 type Basics struct {
