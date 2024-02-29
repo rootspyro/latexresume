@@ -15,10 +15,11 @@ func main() {
 	BuildDocument(
 		BuildBasics(resumeData),
 		BuildWork(resumeData),	
+		BuildVolunteer(resumeData),
 	)
 }
 
-func BuildDocument(header, work string) {
+func BuildDocument(header, work, volunteer string) {
 	var LaTeXCode string
 
 	LaTeXCode = `
@@ -133,7 +134,50 @@ func BuildWork(data JsonResume) string {
 		str += `
 \end{itemize}
 		`
-		
+	}
+
+	return str
+}
+
+func BuildVolunteer(data JsonResume) string {
+	var str string
+
+	if len(data.Volunteer) > 0 {
+	
+		str = `
+\section*{Volunteer Experience}
+\begin{itemize}[leftmargin=*]
+		`
+		for _, volunteer := range data.Volunteer {
+			str += fmt.Sprintf(
+				`
+	\item \entry{%s}{%s} \hfill %s - %s \\
+	%s \\
+	Highlights:
+	\begin{itemize}
+				`,
+				volunteer.Position,
+				volunteer.Organization,
+				volunteer.StartDate,
+				volunteer.EndDate,
+				volunteer.Summary,
+			)		
+
+			for _, highlight := range volunteer.Highlights {
+				str += fmt.Sprintf(
+					`
+		\item %s
+					`,
+					highlight,
+				)
+			}
+
+			str += `
+	\end{itemize}
+			`
+		}
+
+		str += `\end{itemize}`
 	}
 
 	return str
