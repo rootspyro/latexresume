@@ -19,10 +19,11 @@ func main() {
 		BuildEducation(resumeData),
 		BuildAwards(resumeData),
 		BuildCertificates(resumeData),
+		BuildPublications(resumeData),
 	)
 }
 
-func BuildDocument(header, work, volunteer, education, awards, certificates string) {
+func BuildDocument(header, work, volunteer, education, awards, certificates, publications string) {
 	var LaTeXCode string
 
 	LaTeXCode = `
@@ -295,6 +296,42 @@ func BuildCertificates(data JsonResume) string {
 \end{itemize}
 		`
 	}	
+
+	return str
+}
+
+func BuildPublications(data JsonResume) string {
+	var str string
+
+	if len(data.Publications) > 0 {
+
+		str = `
+\section*{Publications}
+\begin{itemize}[leftmargin=*]
+		`
+
+		for _, publications := range data.Publications {
+
+			str += fmt.Sprintf(
+				`
+	\item \textbf{%s} \hfill %s \\
+	Publisher: %s \\
+	\href{%s}{%s} \\
+	%s
+				`,
+				publications.Name,
+				publications.ReleaseDate,
+				publications.Publisher,
+				publications.Url,
+				publications.Url,
+				publications.Summary,
+			)
+		}
+
+		str += `
+\end{itemize}
+		`
+	}
 
 	return str
 }
