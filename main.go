@@ -16,6 +16,7 @@ func main() {
 		BuildBasics(resumeData),
 		BuildWork(resumeData),
 		BuildVolunteer(resumeData),
+		BuildProjects(resumeData),
 		BuildEducation(resumeData),
 		BuildAwards(resumeData),
 		BuildCertificates(resumeData),
@@ -27,7 +28,7 @@ func main() {
 	)
 }
 
-func BuildDocument(header, work, volunteer, education, awards, certificates, publications, skills, languages, interests, references string) {
+func BuildDocument(header, work, volunteer,projects , education, awards, certificates, publications, skills, languages, interests, references string) {
 	var LaTeXCode string
 
 	LaTeXCode = `
@@ -65,11 +66,13 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 %s
 %s
 %s
+%s
 \end{document}
 		`,
 		header,
 		work,
 		volunteer,
+		projects,
 		education,
 		awards,
 		certificates,
@@ -81,6 +84,56 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 	)
 
 	fmt.Println(LaTeXCode)
+}
+
+func BuildProjects(data JsonResume) string {
+	var str string
+
+	if len(data.Projects) > 0 {
+
+		str = `
+\section*{Projects}
+\begin{itemize}[leftmargin=*]
+		` 
+		
+		for _, project := range data.Projects {
+
+			str += fmt.Sprintf(
+				`
+	\item \entry{%s}{%s - %s} \\
+	%s \\
+	\href{%s}{%s}\\
+	Highlights:
+	\begin{itemize}
+				`,
+				project.Name,
+				project.StartDate,
+				project.EndDate,
+				project.Description,
+				project.Url,
+				project.Url,
+			)
+
+			for _, highlight := range project.Highlights {
+				str += fmt.Sprintf(
+					`
+				\item %s
+					`,
+					highlight,
+				)
+			}	
+
+			str += `
+		\end{itemize}
+			`
+		}
+
+		str += `
+\end{itemize}
+		`
+	}
+
+	return str
 }
 
 func BuildLanguages(data JsonResume) string {
