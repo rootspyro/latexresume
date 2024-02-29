@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	jsonPath := "example/resume.json"
+	jsonPath := "./example/resume.json.json"
 
 	resumeData := GetJsonData(jsonPath)
 
@@ -111,7 +111,8 @@ func BuildProjects(data JsonResume) string {
 
 			str += fmt.Sprintf(
 				`
-	\item \entry{%s}{%s - %s} \\
+	\item \entry{%s}{%s - %s} 
+	\vspace{0.1in}
 	%s \\
 	\href{%s}{%s}\\
 	Highlights:
@@ -136,6 +137,7 @@ func BuildProjects(data JsonResume) string {
 
 			str += `
 		\end{itemize}
+		\vspace{0.2in}
 			`
 		}
 
@@ -247,7 +249,7 @@ func BuildBasics(data JsonResume) string {
     \textbf{\LARGE %s} \\
     %s \\
     \href{%s}{%s} | %s | %s \\
-    2712 Broadway St, San Francisco, California, CA 94115, US
+    %s, %s, %s, %s, %s
 \end{flushleft}
 \section*{Summary}
 %s\\
@@ -258,6 +260,11 @@ func BuildBasics(data JsonResume) string {
 		data.Basics.Url,
 		data.Basics.Email,
 		data.Basics.Phone,
+		data.Basics.Location.Address,
+		data.Basics.Location.City,
+		data.Basics.Location.Region,
+		data.Basics.Location.PostalCode,
+		data.Basics.Location.CountryCode,
 		data.Basics.Summary,
 	)
 
@@ -279,7 +286,10 @@ func BuildWork(data JsonResume) string {
 		for _, work := range data.Work {
 			str += fmt.Sprintf(
 				`
-  \item \entry{%s}{%s} \hfill %s - %s \\
+  \item \entry{%s}{%s} \hfill %s - %s 
+
+	\vspace{0.1in}
+
 	%s \\
 	Highlights:
 	\begin{itemize}
@@ -303,6 +313,7 @@ func BuildWork(data JsonResume) string {
 
 			str += `
 	\end{itemize}
+	\vspace{0.2in}
 			`
 		}
 
@@ -372,27 +383,39 @@ func BuildEducation(data JsonResume) string {
 			str += fmt.Sprintf(
 				`
 	\item \entry{%s}{%s} \hfill %s - %s \\
-	Score: %s \\
-	Courses:
-	\begin{itemize}
 				`,
 				education.Area,
 				education.Institution,
 				education.StartDate,
 				education.EndDate,
-				education.Score,
 			)
 
-			for _, course := range education.Courses {
+			if len(education.Score) > 0 {
 				str += fmt.Sprintf(
 					`
-		\item %s
+		Score: %s\\
 					`,
-					course,
+					education.Score,
 				)
 			}
 
-			str += `\end{itemize}`
+			if len(education.Courses) > 0 {
+					str += `
+		Courses:
+		\begin{itemize}
+					`
+				for _, course := range education.Courses {
+					str += fmt.Sprintf(
+						`
+			\item %s
+						`,
+						course,
+					)
+				}
+
+				str += `\end{itemize}`
+			}
+
 		}
 
 		str += `
