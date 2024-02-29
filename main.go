@@ -20,10 +20,11 @@ func main() {
 		BuildAwards(resumeData),
 		BuildCertificates(resumeData),
 		BuildPublications(resumeData),
+		BuildSkills(resumeData),
 	)
 }
 
-func BuildDocument(header, work, volunteer, education, awards, certificates, publications string) {
+func BuildDocument(header, work, volunteer, education, awards, certificates, publications, skills string) {
 	var LaTeXCode string
 
 	LaTeXCode = `
@@ -57,6 +58,7 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 %s
 %s
 %s
+%s
 \end{document}
 		`,
 		header,
@@ -66,6 +68,7 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 		awards,
 		certificates,
 		publications,
+		skills,
 	)
 
 	fmt.Println(LaTeXCode)
@@ -337,6 +340,42 @@ func BuildPublications(data JsonResume) string {
 
 	return str
 }
+
+func BuildSkills(data JsonResume) string {
+	var str string
+
+	if len(data.Skills) > 0 {
+
+		str = `
+\section*{Skills}
+\begin{itemize}[leftmargin=*]
+		`
+
+		for _, skill := range data.Skills {
+			str += fmt.Sprintf(
+				`
+	\item \textbf{%s} - %s \\
+				`,
+				skill.Name,
+				skill.Level,
+			)
+
+			str += "Keywords: "
+			for i, keyword := range skill.Keywords {
+				str += fmt.Sprintf("%s", keyword)
+
+				if i < len(skill.Keywords) - 1 {
+					str += ", "
+				}
+			}
+		}
+		str += `
+\end{itemize}
+		`
+	}
+
+	return str
+} 
 
 func GetJsonData(jsonPath string) JsonResume {
 	var resumeData JsonResume
