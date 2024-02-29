@@ -18,10 +18,11 @@ func main() {
 		BuildVolunteer(resumeData),
 		BuildEducation(resumeData),
 		BuildAwards(resumeData),
+		BuildCertificates(resumeData),
 	)
 }
 
-func BuildDocument(header, work, volunteer, education, awards string) {
+func BuildDocument(header, work, volunteer, education, awards, certificates string) {
 	var LaTeXCode string
 
 	LaTeXCode = `
@@ -53,6 +54,7 @@ func BuildDocument(header, work, volunteer, education, awards string) {
 %s
 %s
 %s
+%s
 \end{document}
 		`,
 		header,
@@ -60,6 +62,7 @@ func BuildDocument(header, work, volunteer, education, awards string) {
 		volunteer,
 		education,
 		awards,
+		certificates,
 	)
 
 	fmt.Println(LaTeXCode)
@@ -260,6 +263,38 @@ func BuildAwards(data JsonResume) string {
 \end{itemize}
 		`
 	}
+
+	return str
+}
+
+func BuildCertificates(data JsonResume) string {
+	var str string
+
+	if len(data.Certificates) > 0 {
+
+		str = `
+\section*{Certificates}
+\begin{itemize}[leftmargin=*]
+		`
+		for _, certificate := range data.Certificates {
+			str += fmt.Sprintf(
+				`
+	\item \textbf{%s} \hfill %s \\
+	Issuer: %s \\
+	\href{%s}{%s}
+				`,
+				certificate.Name,
+				certificate.Date,
+				certificate.Issue,
+				certificate.Url,
+				certificate.Url,
+			)
+		}
+
+		str += `
+\end{itemize}
+		`
+	}	
 
 	return str
 }
