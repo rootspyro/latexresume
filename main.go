@@ -14,7 +14,7 @@ func main() {
 
 	BuildDocument(
 		BuildBasics(resumeData),
-		BuildWork(resumeData),	
+		BuildWork(resumeData),
 		BuildVolunteer(resumeData),
 	)
 }
@@ -59,11 +59,10 @@ func BuildDocument(header, work, volunteer string) {
 
 // This function generate the LaTeX code of the Basics Section
 func BuildBasics(data JsonResume) string {
-
 	var str string
 
-	// 
-	
+	//
+
 	str += fmt.Sprintf(
 		`
 \begin{flushleft}
@@ -87,10 +86,9 @@ func BuildBasics(data JsonResume) string {
 	str += `
 	`
 	return str
-} 
+}
 
 func BuildWork(data JsonResume) string {
-
 	var str string
 
 	if len(data.Work) > 0 {
@@ -143,7 +141,7 @@ func BuildVolunteer(data JsonResume) string {
 	var str string
 
 	if len(data.Volunteer) > 0 {
-	
+
 		str = `
 \section*{Volunteer Experience}
 \begin{itemize}[leftmargin=*]
@@ -161,7 +159,7 @@ func BuildVolunteer(data JsonResume) string {
 				volunteer.StartDate,
 				volunteer.EndDate,
 				volunteer.Summary,
-			)		
+			)
 
 			for _, highlight := range volunteer.Highlights {
 				str += fmt.Sprintf(
