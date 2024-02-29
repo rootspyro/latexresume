@@ -12,7 +12,7 @@ func main() {
 
 	resumeData := GetJsonData(jsonPath)
 
-	BuildDocument(
+	latexCode := BuildDocument(
 		BuildBasics(resumeData),
 		BuildWork(resumeData),
 		BuildVolunteer(resumeData),
@@ -26,9 +26,20 @@ func main() {
 		BuildInterest(resumeData),
 		BuildReferences(resumeData),
 	)
+
+	WriteTex(latexCode)
 }
 
-func BuildDocument(header, work, volunteer,projects , education, awards, certificates, publications, skills, languages, interests, references string) {
+// Convert the string LaTeX  code into a .tex output
+func WriteTex(code string) {
+	err := os.WriteFile("resume.tex", []byte(code), 0664)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func BuildDocument(header, work, volunteer,projects , education, awards, certificates, publications, skills, languages, interests, references string) string {
 	var LaTeXCode string
 
 	LaTeXCode = `
@@ -83,7 +94,7 @@ func BuildDocument(header, work, volunteer,projects , education, awards, certifi
 		references,
 	)
 
-	fmt.Println(LaTeXCode)
+	return LaTeXCode
 }
 
 func BuildProjects(data JsonResume) string {
