@@ -83,10 +83,10 @@ type Award struct {
 }
 
 type Certificate struct {
-	Name  string `json:"name"`
-	Date  string `json:"date"`
-	Issue string `json:"issue"`
-	Url   string `json:"url"`
+	Name   string `json:"name"`
+	Date   string `json:"date"`
+	Issuer string `json:"issuer"`
+	Url    string `json:"url"`
 }
 
 type Publication struct {

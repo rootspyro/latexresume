@@ -56,6 +56,7 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 %s
 %s
 %s
+%s
 \end{document}
 		`,
 		header,
@@ -64,6 +65,7 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 		education,
 		awards,
 		certificates,
+		publications,
 	)
 
 	fmt.Println(LaTeXCode)
@@ -286,7 +288,7 @@ func BuildCertificates(data JsonResume) string {
 				`,
 				certificate.Name,
 				certificate.Date,
-				certificate.Issue,
+				certificate.Issuer,
 				certificate.Url,
 				certificate.Url,
 			)
