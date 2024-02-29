@@ -21,10 +21,13 @@ func main() {
 		BuildCertificates(resumeData),
 		BuildPublications(resumeData),
 		BuildSkills(resumeData),
+		BuildLanguages(resumeData),
+		BuildInterest(resumeData),
+		BuildReferences(resumeData),
 	)
 }
 
-func BuildDocument(header, work, volunteer, education, awards, certificates, publications, skills string) {
+func BuildDocument(header, work, volunteer, education, awards, certificates, publications, skills, languages, interests, references string) {
 	var LaTeXCode string
 
 	LaTeXCode = `
@@ -59,6 +62,9 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 %s
 %s
 %s
+%s
+%s
+%s
 \end{document}
 		`,
 		header,
@@ -69,9 +75,100 @@ func BuildDocument(header, work, volunteer, education, awards, certificates, pub
 		certificates,
 		publications,
 		skills,
+		languages,
+		interests,
+		references,
 	)
 
 	fmt.Println(LaTeXCode)
+}
+
+func BuildLanguages(data JsonResume) string {
+	var str string
+
+	if len(data.Languages) > 0 {
+
+		str = `
+\section*{Languages}
+\begin{itemize}[leftmargin=*]
+		` 
+
+		for _, language := range data.Languages {
+			str += fmt.Sprintf(
+				`
+  \item \textbf{%s} - %s 
+				`,
+				language.Language,
+				language.Fluency,
+			)
+		}
+
+		str += `
+\end{itemize}
+		` 
+	}
+
+	return str
+}
+
+func BuildInterest(data JsonResume) string {
+	var str string
+
+	if len(data.Interests) > 0 {
+
+		str = `
+\section*{Interests}
+\begin{itemize}[leftmargin=*]
+		` 
+
+		for _, interest := range data.Interests {
+			str += fmt.Sprintf(`\item %s: `, interest.Name)
+
+			for i,keyword := range interest.Keywords {
+				str += fmt.Sprintf("%s", keyword)
+
+				if i < len(interest.Keywords) - 1 {
+					str += fmt.Sprintf(", ")
+				}
+			}
+		}
+
+		str += `
+\end{itemize}
+		` 
+	}
+
+	return str
+}
+
+func BuildReferences(data JsonResume) string {
+	var str string
+
+	if len(data.References) > 0 {
+
+		str = `
+\section*{References}
+\begin{itemize}[leftmargin=*]
+		` 
+
+		for _, reference := range data.References {
+			str += fmt.Sprintf(
+				`
+	\item \textbf{%s} \\
+	%s	
+
+				`,
+				reference.Name,
+				reference.Reference,
+			)
+		}
+
+		str += `
+\end{itemize}
+		` 
+	}
+
+	return str
 }
 
 // This function generate the LaTeX code of the Basics Section
