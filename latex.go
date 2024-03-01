@@ -1,8 +1,14 @@
+/*
+
+	MODULE: LATEX 
+	DESCRIPTION: This module is focuses on maintaining the LaTeX code
+
+*/
+
 package main
 
 import "fmt"
 
-// This module focuses on maintaining the LaTex code
 type LaTeX struct {
 	ResumeSchema JsonResume	
 	LatexCode string

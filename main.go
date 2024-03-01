@@ -2,11 +2,13 @@ package main
 
 func main() {
 
-	jsonPath := "./example/resume.json"
-	outputPath := "./resume.tex"
+	// Create the command object
+	command := NewCommand()
+	inputPath := command.Flags.InputPath
+	outputPath := command.Flags.OutputPath
 
 	// Get the json schema
-	files := NewFiles(jsonPath, outputPath)
+	files := NewFiles(inputPath, outputPath)
 	resumeData := files.GetJsonData()
 
 	// Build the LaTeX
@@ -15,4 +17,5 @@ func main() {
 	// Write the document
 	files.WriteTex(latex.LatexCode)
 }
+
 
