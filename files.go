@@ -32,14 +32,15 @@ func (f *Files) GetJsonData() JsonResume {
 
 	data, err := os.ReadFile(f.InputPath)
 	if err != nil {
-		fmt.Printf("%s not found!\n", f.InputPath)
+		fmt.Printf("\n%s file not found!\n", f.InputPath)
+		fmt.Printf("Pls follow the resumejson schema from: https://jsonresume.org/schema/\n\n")
 	  os.Exit(0)	
 	}
 
 	err = json.Unmarshal(data, &resumeData)
 	if err != nil {
-		fmt.Printf("Not Valid Json Schema\n")
-		fmt.Printf("Pls follow the resumejson schema from: https://jsonresume.org/schema/\n")
+		fmt.Printf("\nNot Valid Json Schema\n")
+		fmt.Printf("Pls follow the resumejson schema from: https://jsonresume.org/schema/\n\n")
 		os.Exit(0)
 	}
 

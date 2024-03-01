@@ -1,7 +1,6 @@
 package main
 
 func main() {
-
 	// Create the command object
 	command := NewCommand()
 	inputPath := command.Flags.InputPath
@@ -17,5 +16,3 @@ func main() {
 	// Write the document
 	files.WriteTex(latex.LatexCode)
 }
-
-
