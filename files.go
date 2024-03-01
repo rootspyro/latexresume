@@ -10,8 +10,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
+	"os/exec"
 )
 
 type Files struct {
@@ -22,7 +22,7 @@ type Files struct {
 func NewFiles(i, o string) Files {
 	return Files{
 		InputPath:      i,
-		OutputFilename: o,
+		OutputFilename: o + ".tex",
 	}
 }
 
@@ -34,7 +34,7 @@ func (f *Files) GetJsonData() JsonResume {
 	if err != nil {
 		fmt.Printf("\n%s file not found!\n", f.InputPath)
 		fmt.Printf("Pls follow the resumejson schema from: https://jsonresume.org/schema/\n\n")
-	  os.Exit(0)	
+		os.Exit(0)
 	}
 
 	err = json.Unmarshal(data, &resumeData)
@@ -49,10 +49,19 @@ func (f *Files) GetJsonData() JsonResume {
 
 // Convert the string LaTeX  code into a .tex output
 func (f *Files) WriteTex(code string) {
-
-	texFilename := f.OutputFilename + ".tex"
-	err := os.WriteFile(texFilename, []byte(code), 0664)
+	err := os.WriteFile(f.OutputFilename, []byte(code), 0664)
 	if err != nil {
-		log.Panic(err.Error())
+		fmt.Printf("Error creating %s file", f.OutputFilename)
+		os.Exit(0)
+	}
+}
+
+// Run the latexmk -pdf command
+func (f *Files) MakePDF() {
+	cmd := exec.Command("latexmk", "-pdf", f.OutputFilename)
+
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("%s", err.Error())
+		os.Exit(0)
 	}
 }

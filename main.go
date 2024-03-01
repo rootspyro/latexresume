@@ -15,4 +15,5 @@ func main() {
 
 	// Write the document
 	files.WriteTex(latex.LatexCode)
+	files.MakePDF()
 }
