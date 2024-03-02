@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 type Files struct {
@@ -68,13 +69,19 @@ func (f *Files) MakeTexCode(code string, onlyTex, onlyPDF bool) {
 	}
 
 	if !onlyPDF || onlyTex { // latexresume -pdf -tex case
-		fmt.Printf("%s successfully created!\n", f.TexFilename)
+
+		splitTexFilename := strings.Split(f.TexFilename, "/") // Get only filename if the output value is a dir path. Example: ./output/resume.pdf
+		filename := splitTexFilename[len(splitTexFilename) - 1]
+
+		fmt.Printf("%s successfully created!\n", filename)
 	}
 }
 
 // Run the latexmk -pdf command
 func (f *Files) MakePDF(onlyTex, onlyPDF bool) {
-	pdfFilename := f.OutputFilename + ".pdf"
+
+	splitOuputName := strings.Split(f.OutputFilename, "/") // Get only filename if the output value is a dir path. Example: ./output/resume.pdf
+	pdfFilename := splitOuputName[len(splitOuputName) - 1] + ".pdf"
 
 	// Create temporal directory
 	if err := os.Mkdir(f.TemporalDir, os.ModePerm); err != nil {
@@ -91,10 +98,10 @@ func (f *Files) MakePDF(onlyTex, onlyPDF bool) {
 
 	// Move the generated .pdf file out from the temporal directory
 	tempPath := f.TemporalDir + "/" + pdfFilename
-	currentPath := pdfFilename
+	currentPath := f.OutputFilename + ".pdf" 
 
 	if err := os.Rename(tempPath, currentPath); err != nil {
-		fmt.Printf("\nSomething went wrong creating the %s.pdf file.\n\n", pdfFilename)
+		fmt.Printf("\nSomething went wrong creating the %s file.\n\n", pdfFilename)
 		os.Exit(0)
 	}
 
