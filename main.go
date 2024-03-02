@@ -1,8 +1,17 @@
 package main
 
+import "os"
+
 func main() {
+
 	// Create the command object
 	command := NewCommand()
+
+	if command.Flags.Version {
+		command.PrintVersion()
+		os.Exit(0)
+	}
+
 	inputPath := command.Flags.InputPath
 	outputPath := command.Flags.OutputPath
 
