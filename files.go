@@ -25,8 +25,8 @@ func NewFiles(i, o string) Files {
 	return Files{
 		InputPath:      i,
 		OutputFilename: o,
-		TexFilename: o + ".tex",
-		TemporalDir: ".latexresume_temp",
+		TexFilename:    o + ".tex",
+		TemporalDir:    ".latexresume_temp",
 	}
 }
 
@@ -51,20 +51,29 @@ func (f *Files) GetJsonData() JsonResume {
 	return resumeData
 }
 
+func (f *Files) BuildOutputs(texCode string, texFlag, pdfFlag bool) {
+	f.MakeTexCode(texCode, texFlag, pdfFlag)
+
+	if !texFlag || pdfFlag { // In case the user apply the command "latexresume -pdf -tex" because is dumb like me
+		f.MakePDF(texFlag, pdfFlag)
+	}
+}
+
 // Convert the string LaTeX  code into a .tex output
-func (f *Files) WriteTex(code string) {
+func (f *Files) MakeTexCode(code string, onlyTex, onlyPDF bool) {
 	err := os.WriteFile(f.TexFilename, []byte(code), 0664)
 	if err != nil {
 		fmt.Printf("\nError creating %s file\n\n", f.TexFilename)
 		os.Exit(0)
 	}
 
-	fmt.Printf("%s successfully created!\n", f.TexFilename)
+	if !onlyPDF || onlyTex { // latexresume -pdf -tex case
+		fmt.Printf("%s successfully created!\n", f.TexFilename)
+	}
 }
 
 // Run the latexmk -pdf command
-func (f *Files) MakePDF() {
-
+func (f *Files) MakePDF(onlyTex, onlyPDF bool) {
 	pdfFilename := f.OutputFilename + ".pdf"
 
 	// Create temporal directory
@@ -73,7 +82,7 @@ func (f *Files) MakePDF() {
 		os.Exit(0)
 	}
 
-	cmd := exec.Command("latexmk", "-output-directory=" + f.TemporalDir, "-pdf", f.TexFilename)
+	cmd := exec.Command("latexmk", "-output-directory="+f.TemporalDir, "-pdf", f.TexFilename)
 
 	if err := cmd.Run(); err != nil {
 		fmt.Printf("Something went wrong creating the %s file.\n", pdfFilename)
@@ -91,12 +100,19 @@ func (f *Files) MakePDF() {
 
 	// Remove the temporal directory
 	if err := os.RemoveAll(f.TemporalDir); err != nil {
-		fmt.Println(err)
-		fmt.Printf("latexresume temporal directory couldn't be removed\n",)
+		fmt.Printf("latexresume temporal directory couldn't be removed\n")
 		os.Exit(0)
+	}
+	
+	// if -pdf flag is true then delete .tex file
+	if !onlyTex && onlyPDF { // latexresume -pdf -tex case
+
+		if err := os.Remove(f.TexFilename); err != nil {
+			fmt.Printf("%s couldn't be removed!\n", f.TexFilename)
+			os.Exit(0)
+		}
+
 	}
 
 	fmt.Printf("%s successfully created!\n", pdfFilename)
-
 }
-

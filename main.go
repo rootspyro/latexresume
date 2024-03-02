@@ -3,7 +3,6 @@ package main
 import "os"
 
 func main() {
-
 	// Create the command object
 	command := NewCommand()
 
@@ -23,6 +22,9 @@ func main() {
 	latex := NewLatex(resumeData)
 
 	// Write the document
-	files.WriteTex(latex.LatexCode)
-	files.MakePDF()
+	files.BuildOutputs(
+		latex.LatexCode,
+		command.Flags.TEX,
+		command.Flags.PDF,
+	)
 }
