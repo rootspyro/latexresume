@@ -76,7 +76,7 @@ func(l *LaTeX) BuildDocument() {
 		l.buildSkills(l.ResumeSchema.Skills),
 		l.buildAwards(l.ResumeSchema.Awards),
 		l.buildInterest(l.ResumeSchema.Interests),
-		l.buildInterest(l.ResumeSchema.Interests),
+		l.buildReferences(l.ResumeSchema.References),
 	)
 
 	l.LatexCode = LaTeXCode
