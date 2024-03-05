@@ -1,13 +1,17 @@
 /*
 
-	MODULE: LATEX 
+	MODULE: LATEX
 	DESCRIPTION: This module is focuses on maintaining the LaTeX code
 
 */
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"regexp"
+)
 
 type LaTeX struct {
 	ResumeSchema JsonResume	
@@ -83,7 +87,16 @@ func(l *LaTeX) BuildDocument() {
 }
 
 func(l *LaTeX) buildBasics(data Basics) string {
+
+	var website string
 	var str string
+
+	if data.Url != "" {
+		if err := l.ExtractDomain(data.Url, &website); err != nil {
+			fmt.Printf("There was an error extracting the domain\n")
+			os.Exit(0)
+		}
+	}
 
 	str += fmt.Sprintf(
 		`
@@ -99,7 +112,7 @@ func(l *LaTeX) buildBasics(data Basics) string {
 		data.Name,
 		data.Label,
 		data.Url,
-		data.Url,
+		website,
 		data.Email,
 		data.Phone,
 		data.Location.Address,
@@ -309,6 +322,15 @@ func(l *LaTeX) buildCertificates(data []Certificate) string {
 \begin{itemize}[leftmargin=*]
 		`
 		for _, certificate := range data {
+			var certificateIrl string
+
+			if certificate.Url != "" {
+				if err := l.ExtractDomain(certificate.Url, &certificateIrl); err != nil {
+					fmt.Println("There was a problem extracting the certificate url\n")
+					os.Exit(0)
+				}
+			}
+
 			str += fmt.Sprintf(
 				`
 	\item \textbf{%s} \hfill %s \\
@@ -319,7 +341,7 @@ func(l *LaTeX) buildCertificates(data []Certificate) string {
 				certificate.Date,
 				certificate.Issuer,
 				certificate.Url,
-				certificate.Url,
+				certificateIrl,
 			)
 		}
 
@@ -344,6 +366,15 @@ func(l *LaTeX) buildPublications(data []Publication) string {
 
 		for _, publications := range data {
 
+			var publicationIrl string
+
+			if publications.Url != "" {
+				if err := l.ExtractDomain(publications.Url, &publicationIrl); err != nil {
+					fmt.Printf("There was a problem with the publication Url\n")
+					os.Exit(0)
+				} 
+			}
+
 			str += fmt.Sprintf(
 				`
 	\item \textbf{%s} \hfill %s \\
@@ -355,7 +386,7 @@ func(l *LaTeX) buildPublications(data []Publication) string {
 				publications.ReleaseDate,
 				publications.Publisher,
 				publications.Url,
-				publications.Url,
+				publicationIrl,
 				publications.Summary,
 			)
 		}
@@ -445,6 +476,15 @@ func(l *LaTeX) buildProjects(data []Project) string {
 		
 		for _, project := range data {
 
+			var projectWebsite string
+
+			if project.Url != "" {
+				if err := l.ExtractDomain(project.Url, &projectWebsite); err != nil {
+					fmt.Println("There was an error getting the project url")
+					os.Exit(0)
+				}
+			}
+
 			str += fmt.Sprintf(
 				`
 	\item \entry{%s}{%s - %s} 
@@ -459,7 +499,7 @@ func(l *LaTeX) buildProjects(data []Project) string {
 				project.EndDate,
 				project.Description,
 				project.Url,
-				project.Url,
+				projectWebsite,
 			)
 
 			for _, highlight := range project.Highlights {
@@ -547,3 +587,14 @@ func(l *LaTeX) buildReferences(data []Reference) string {
 
 }
 
+func(l *LaTeX) ExtractDomain(url string, domain *string) error {
+
+	regex := regexp.MustCompile(`^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)`)
+	matches := regex.FindStringSubmatch(url)
+	if len(matches) < 2 {
+		return  fmt.Errorf("unable to extract domain from URL")
+	}
+
+	*domain = matches[1]
+	return nil
+}
