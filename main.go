@@ -1,6 +1,10 @@
 package main
 
-import "os"
+import (
+	"os"
+
+	"github.com/rootspyro/latexresume/files"
+)
 
 func main() {
 	// Create the command object
@@ -15,14 +19,14 @@ func main() {
 	outputPath := command.Flags.OutputPath
 
 	// Get the json schema
-	files := NewFiles(inputPath, outputPath)
-	resumeData := files.GetJsonData()
+	f := files.NewFiles(inputPath, outputPath)
+	resumeData := f.GetJsonData()
 
 	// Build the LaTeX
 	latex := NewLatex(resumeData)
 
 	// Write the document
-	files.BuildOutputs(
+	f.BuildOutputs(
 		latex.LatexCode,
 		command.Flags.TEX,
 		command.Flags.PDF,

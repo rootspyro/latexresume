@@ -5,7 +5,7 @@
 
 */
 
-package main
+package files
 
 import (
 	"encoding/json"
@@ -13,6 +13,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/rootspyro/latexresume/pipes"
 )
 
 type Files struct {
@@ -32,8 +34,8 @@ func NewFiles(i, o string) Files {
 }
 
 // Read the .json schema file
-func (f *Files) GetJsonData() JsonResume {
-	var resumeData JsonResume
+func (f *Files) GetJsonData() pipes.JsonResume {
+	var resumeData pipes.JsonResume
 
 	data, err := os.ReadFile(f.InputPath)
 	if err != nil {
