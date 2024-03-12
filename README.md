@@ -2,10 +2,18 @@
 
 Latexresume is a CLI Tool to automate the generation and update of a professional IT resume.
 
-## Installation
+## System Requirements
+Latexresume can convert the data of the JSON schema into LaTeX code without any extra package, but to convert LaTeX code into a formatted PDF resume it is required to install the following packages: 
+- Latex
+    - To install LaTeX you can install the package [texlive-full](https://www.tug.org/texlive/) or if you don't need the all packages of latex you can install the following:
+        - texlive-base
+        - texlive-latex-recommend
+        - texlive-latex-extra
 
-### System Requirements
-Latexresume can convert the data of the JSON schema into LaTeX code without any extra package, but to convert LaTeX code into a formatted PDF resume it is required to install [latexmk](https://mg.readthedocs.io/latexmk.html).
+- Latex Compilation
+    - [latexmk](https://mg.readthedocs.io/latexmk.html)
+
+## Installation
 
 ### GO
 ```shell
