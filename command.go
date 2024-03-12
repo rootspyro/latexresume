@@ -55,5 +55,5 @@ func NewCommand() Command {
 }
 
 func (c *Command) PrintVersion() {
-	fmt.Printf("latexresume %s\n", c.Version)
+	fmt.Printf("latexresume v.%s\n", c.Version)
 }
