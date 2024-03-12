@@ -15,6 +15,9 @@ Latexresume can convert the data of the JSON schema into LaTeX code without any 
 
 ## Installation
 
+### Releases
+Check the [releases](https://github.com/rootspyro/latexresume/releases) to download the binary for your OS.
+
 ### GO
 ```shell
 go install github.com/rootspyro/latexresume@latest
