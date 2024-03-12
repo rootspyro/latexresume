@@ -2,7 +2,9 @@ bin = latexresume
 version = 1.0.2
 
 local:
-	go build -ldflags "-X main.appVersion=$(version)" -o $(bin) .
+	go build -ldflags "-X main.version=$(version)" -o $(bin) .
 
-release:
-	
+local_release:
+	goreleaser build --clean --snapshot	
+
+

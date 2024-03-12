@@ -12,7 +12,7 @@ import (
 	"fmt"
 )
 
-var appVersion string
+var version string
 
 type Flags struct {
 	InputPath  string
@@ -30,26 +30,26 @@ type Command struct {
 func NewCommand() Command {
 	var input *string
 	var output *string
-	var version *bool
+	var versionF *bool
 	var tex *bool
 	var pdf *bool
 
 	input = flag.String("json", "resume.json", "Specify the input .json file")
 	output = flag.String("o", "resume", "Specify the output filename")
-	version = flag.Bool("v", false, "Display the latexresume version")
+	versionF = flag.Bool("v", false, "Display the latexresume version")
 	tex = flag.Bool("tex", false, "Generate only the .tex result")
 	pdf = flag.Bool("pdf", false, "Generate only the .pdf result")
 
 	flag.Parse()
 
 	return Command{
-		Version: appVersion,
+		Version: version,
 		Flags: Flags{
 			InputPath:  *input,
 			OutputPath: *output,
 			TEX:        *tex,
 			PDF:        *pdf,
-			Version:    *version,
+			Version:    *versionF,
 		},
 	}
 }
