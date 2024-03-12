@@ -12,6 +12,8 @@ import (
 	"fmt"
 )
 
+var appVersion string
+
 type Flags struct {
 	InputPath  string
 	OutputPath string
@@ -41,7 +43,7 @@ func NewCommand() Command {
 	flag.Parse()
 
 	return Command{
-		Version: "1.0",
+		Version: appVersion,
 		Flags: Flags{
 			InputPath:  *input,
 			OutputPath: *output,
