@@ -11,14 +11,16 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+
+	"github.com/rootspyro/latexresume/pipes"
 )
 
 type LaTeX struct {
-	ResumeSchema JsonResume	
+	ResumeSchema pipes.JsonResume	
 	LatexCode string
 }
 
-func NewLatex(resume JsonResume) LaTeX {
+func NewLatex(resume pipes.JsonResume) LaTeX {
 
 	var latex LaTeX
 
@@ -86,7 +88,7 @@ func(l *LaTeX) BuildDocument() {
 	l.LatexCode = LaTeXCode
 }
 
-func(l *LaTeX) buildBasics(data Basics) string {
+func(l *LaTeX) buildBasics(data pipes.Basics) string {
 
 	var website string
 	var str string
@@ -126,7 +128,7 @@ func(l *LaTeX) buildBasics(data Basics) string {
 	return str
 }
 
-func(l *LaTeX) buildWork(data []Work) string {
+func(l *LaTeX) buildWork(data []pipes.Work) string {
 
 	var str string
 
@@ -180,7 +182,7 @@ func(l *LaTeX) buildWork(data []Work) string {
 	return str
 }
 
-func(l *LaTeX) buildVolunteer(data []Volunteer) string {
+func(l *LaTeX) buildVolunteer(data []pipes.Volunteer) string {
 
 	var str string
 
@@ -225,7 +227,7 @@ func(l *LaTeX) buildVolunteer(data []Volunteer) string {
 	return str
 }
 
-func(l *LaTeX) buildEducation(data []Education) string {
+func(l *LaTeX) buildEducation(data []pipes.Education) string {
 	var str string
 
 	if len(data) > 0 {
@@ -281,7 +283,7 @@ func(l *LaTeX) buildEducation(data []Education) string {
 	return str
 }
 
-func(l *LaTeX) buildAwards( data []Award ) string {
+func(l *LaTeX) buildAwards( data []pipes.Award ) string {
 	var str string
 
 	if len(data) > 0 {
@@ -312,7 +314,7 @@ func(l *LaTeX) buildAwards( data []Award ) string {
 	return str
 }
 
-func(l *LaTeX) buildCertificates(data []Certificate) string {
+func(l *LaTeX) buildCertificates(data []pipes.Certificate) string {
 	var str string
 
 	if len(data) > 0 {
@@ -354,7 +356,7 @@ func(l *LaTeX) buildCertificates(data []Certificate) string {
 
 }
 
-func(l *LaTeX) buildPublications(data []Publication) string {
+func(l *LaTeX) buildPublications(data []pipes.Publication) string {
 	var str string
 
 	if len(data) > 0 {
@@ -399,7 +401,7 @@ func(l *LaTeX) buildPublications(data []Publication) string {
 	return str
 }
 
-func(l *LaTeX) buildSkills(data []Skill) string {
+func(l *LaTeX) buildSkills(data []pipes.Skill) string {
 	var str string
 
 	if len(data) > 0 {
@@ -435,7 +437,7 @@ func(l *LaTeX) buildSkills(data []Skill) string {
 	return str
 }
 
-func(l *LaTeX) buildLanguages(data []Language) string {
+func(l *LaTeX) buildLanguages(data []pipes.Language) string {
 	var str string
 
 	if len(data) > 0 {
@@ -464,7 +466,7 @@ func(l *LaTeX) buildLanguages(data []Language) string {
 
 }
 
-func(l *LaTeX) buildProjects(data []Project) string {
+func(l *LaTeX) buildProjects(data []pipes.Project) string {
 	var str string
 
 	if len(data) > 0 {
@@ -526,7 +528,7 @@ func(l *LaTeX) buildProjects(data []Project) string {
 
 }
 
-func(l *LaTeX) buildInterest(data []Interest) string {
+func(l *LaTeX) buildInterest(data []pipes.Interest) string {
 	var str string
 
 	if len(data) > 0 {
@@ -556,7 +558,7 @@ func(l *LaTeX) buildInterest(data []Interest) string {
 	return str
 }
 
-func(l *LaTeX) buildReferences(data []Reference) string {
+func(l *LaTeX) buildReferences(data []pipes.Reference) string {
 	var str string
 
 	if len(data) > 0 {

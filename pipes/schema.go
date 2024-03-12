@@ -1,4 +1,4 @@
-package main
+package pipes 
 
 // THE JSON RESUME SCHEMA
 // https://jsonresume.org/schema/
