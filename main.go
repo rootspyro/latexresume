@@ -18,8 +18,17 @@ func main() {
 	inputPath := command.Flags.InputPath
 	outputPath := command.Flags.OutputPath
 
+	tempDir := files.NewTempDir(".latexresume_temp")
+
+	if !tempDir.GetTempDir() {
+		tempDir.CreateTempDir()	
+	}
+
+	// always remove the temporal directory at the end of the program
+	defer tempDir.RemoveTempDir() 
+
 	// Get the json schema
-	f := files.NewFiles(inputPath, outputPath)
+	f := files.NewFiles(inputPath, outputPath, tempDir.Name)
 	resumeData := f.GetJsonData()
 
 	// Build the LaTeX

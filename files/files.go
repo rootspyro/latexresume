@@ -24,12 +24,12 @@ type Files struct {
 	TemporalDir    string
 }
 
-func NewFiles(i, o string) Files {
+func NewFiles(i, o, tempDir string) Files {
 	return Files{
 		InputPath:      i,
 		OutputFilename: o,
 		TexFilename:    o + ".tex",
-		TemporalDir:    ".latexresume_temp",
+		TemporalDir:    tempDir,
 	}
 }
 
@@ -85,12 +85,6 @@ func (f *Files) MakePDF(onlyTex, onlyPDF bool) {
 	splitOuputName := strings.Split(f.OutputFilename, "/") // Get only filename if the output value is a dir path. Example: ./output/resume.pdf
 	pdfFilename := splitOuputName[len(splitOuputName) - 1] + ".pdf"
 
-	// Create temporal directory
-	if err := os.Mkdir(f.TemporalDir, os.ModePerm); err != nil {
-		fmt.Printf("\nUnable to create temporal directory\n\n")
-		os.Exit(0)
-	}
-
 	cmd := exec.Command("latexmk", "-output-directory="+f.TemporalDir, "-pdf", f.TexFilename)
 
 	if err := cmd.Run(); err != nil {
@@ -107,12 +101,6 @@ func (f *Files) MakePDF(onlyTex, onlyPDF bool) {
 		os.Exit(0)
 	}
 
-	// Remove the temporal directory
-	if err := os.RemoveAll(f.TemporalDir); err != nil {
-		fmt.Printf("latexresume temporal directory couldn't be removed\n")
-		os.Exit(0)
-	}
-	
 	// if -pdf flag is true then delete .tex file
 	if !onlyTex && onlyPDF { // latexresume -pdf -tex case
 
