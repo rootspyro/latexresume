@@ -1,20 +1,41 @@
 #! /bin/bash
-
+#
 binName=latexresume
 builds=dist
-
-# Init values
-arch=amd64
-os=linux
-
-# Get the software version from tag
 version=$(git describe --tags --abbrev=0)
 
-# Build LINUX_AMD64
-GOARCH=$arch GOOS=$os go build -ldflags "-X main.version=$version"  -o $binName .
+BuildBinary() {
+  # $1 = arch
+  # $2 = os 
 
-tarName=$binName\_$os\_$arch.tar.gz
+  GOARCH=$1 GOOS=$2 go build -ldflags "-X main.version=$version"  -o $binName .
+  local tarName=$binName\_$2\_$1.tar.gz
 
-tar -czvf $tarName $binName
+  tar -czvf $tarName $binName
+  mv $tarName $builds/$tarName && rm $binName
+}
 
-mv $tarName $builds/$tarName && rm $binName
+# OS CONFIGURATION
+
+osList=("linux" "windows" "darwin")
+
+linuxArchs=("arm64" "386" "amd64")
+windowsArchs=("386" "amd64")
+macOsArchs=("amd64")
+
+declare -A os_archs
+
+os_archs["linux"]=${linuxArchs[@]}
+os_archs["windows"]=${windowsArchs[@]}
+os_archs["darwin"]=${macOsArchs[@]}
+
+# BUILD THE BINARIES
+for os in ${osList[@]}
+do
+  osArchs="${os_archs[$os]}"
+
+  for arch in ${osArchs[@]} 
+  do
+    BuildBinary $arch $os
+  done
+done
