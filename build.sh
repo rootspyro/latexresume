@@ -15,6 +15,12 @@ BuildBinary() {
   mv $tarName $builds/$tarName && rm $binName
 }
 
+# BUILD'S DIR
+if [ ! -d $builds ]; then
+  echo "creating $builds directory"
+  mkdir $builds
+fi
+
 # OS CONFIGURATION
 
 osList=("linux" "windows" "darwin")
