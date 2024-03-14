@@ -18,9 +18,8 @@ BuildBinary() {
 }
 
 # BUILD'S DIR
-if [ ! -d $builds ]; then
-  echo "creating $builds directory"
-  mkdir $builds
+if [ -d $builds ]; then
+  rm -r $builds
 fi
 
 # OS CONFIGURATION
@@ -38,7 +37,9 @@ os_archs["windows"]=${windowsArchs[@]}
 os_archs["darwin"]=${macOsArchs[@]}
 
 # BUILD THE BINARIES
-#
+
+mkdir $builds
+
 # checksums - SHA256
 touch $builds/$checksumsName
 
