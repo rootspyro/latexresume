@@ -3,6 +3,7 @@
 binName=latexresume
 builds=dist
 version=$(git describe --tags --abbrev=0)
+checksumsName=$binName\_$version\_checksums.txt
 
 BuildBinary() {
   # $1 = arch
@@ -12,6 +13,7 @@ BuildBinary() {
   local tarName=$binName\_$2\_$1.tar.gz
 
   tar -czvf $tarName $binName
+  sha256sum $tarName >> $builds/$checksumsName
   mv $tarName $builds/$tarName && rm $binName
 }
 
@@ -36,6 +38,10 @@ os_archs["windows"]=${windowsArchs[@]}
 os_archs["darwin"]=${macOsArchs[@]}
 
 # BUILD THE BINARIES
+#
+# checksums - SHA256
+touch $builds/$checksumsName
+
 for os in ${osList[@]}
 do
   osArchs="${os_archs[$os]}"
