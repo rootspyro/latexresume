@@ -489,9 +489,12 @@ func(l *LaTeX) buildProjects(data []pipes.Project) string {
 
 			str += fmt.Sprintf(
 				`
-	\item \entry{%s}{%s - %s}\\ 
+	\item \entry{%s}{%s - %s} 
 	\vspace{0.1in}
-	%s \\
+	\newline
+	%s
+	\vspace{0.1in}
+	\newline
 	\href{%s}{%s}\\
 	Highlights:
 	\begin{itemize}
